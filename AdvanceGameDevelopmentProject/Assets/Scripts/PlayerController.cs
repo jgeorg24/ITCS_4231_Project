@@ -6,16 +6,22 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement")]
     public float moveSpeed;
-    private Vector2 currentMovementInput;
     public float jumpForce;
-    public LayerMask groundLayerMask;
-    public Transform cameraContainer;
     public float minXView;
     public float maxXView;
     private float camCurXRot;
     public float cameraSensitivity;
+
+    private Vector2 currentMovementInput;
     private Vector2 mouseDelta;
+    public LayerMask groundLayer;
+
+    [Header("Look")] 
+    public Transform cameraContainer;
+
+    [HideInInspector]
     public bool canView=true;
 
     void Start()
@@ -28,7 +34,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rig = GetComponent<Rigidbody>();
-
         instance = this;
     }
 
@@ -106,7 +111,7 @@ public class PlayerController : MonoBehaviour
         };
         for (int i = 0; i < rays.Length; i++)
         {
-            if (Physics.Raycast(rays[i], 0.1f, groundLayerMask))
+            if (Physics.Raycast(rays[i], 0.1f, groundLayer))
             {
                 return true;
             }
