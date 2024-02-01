@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638422770275865711
-    m_Hash: 1515860677
+      ticks: 638423614870258893
+    m_Hash: 1324453161
   m_LockFileStatus:
     m_FilePath: C:/Users/Akai/Documents/Repo/ITCS_4231_Project/AdvanceGameDevelopmentProject/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638422770275925732
-    m_Hash: 3731139383
+      ticks: 638423614870318879
+    m_Hash: 952443264
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -22,6 +22,69 @@ m_LocalPackages:
 m_ProjectPath: C:/Users/Akai/Documents/Repo/ITCS_4231_Project/AdvanceGameDevelopmentProject/Packages
 m_EditorVersion: 2022.3.8f1 (b5eafc012955)
 m_ResolvedPackages:
+- packageId: com.spoiledcat.git@1.0.18
+  testable: 0
+  isDirectDependency: 1
+  version: 1.0.18
+  source: 1
+  resolvedPath: C:\Users\Akai\Documents\Repo\ITCS_4231_Project\AdvanceGameDevelopmentProject\Library\PackageCache\com.spoiledcat.git@1.0.18
+  assetPath: Packages/com.spoiledcat.git
+  name: com.spoiledcat.git
+  displayName: Git for Unity
+  author:
+    name: 
+    email: shana@spoiledcat.net
+    url: 
+  category: 
+  type: 
+  description: Git for Unity brings [Git](https://git-scm.com/) into [Unity](https://unity3d.com/),
+    integrating source control into your work with friendly and accessible tools
+    and workflows.
+  status: 0
+  errors: []
+  versions:
+    all:
+    - 1.0.9
+    - 1.0.11
+    - 1.0.12
+    - 1.0.18
+    compatible:
+    - 1.0.9
+    - 1.0.11
+    - 1.0.12
+    - 1.0.18
+    recommended: 
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords: []
+  registry:
+    id: scoped:project:Git for Unity
+    name: Git for Unity
+    url: https://registry.spoiledcat.com
+    scopes:
+    - com.spoiledcat
+    isDefault: 0
+    capabilities: 0
+    configSource: 4
+  hideInEditor: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 638271278247570000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: git+ssh://git@github.com/spoiledcat/git-for-unity.git
+    revision: 07a3c3384a59a979eb052b76ff9498675875cf40
+    path: 
+  unityLifecycle:
+    version: 
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
 - packageId: com.unity.collab-proxy@2.0.7
   testable: 0
   isDirectDependency: 1
