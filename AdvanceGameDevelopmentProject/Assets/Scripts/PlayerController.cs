@@ -8,18 +8,17 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed;
-    public float jumpForce;
-    public float minXView;
-    public float maxXView;
-    private float camCurXRot;
-    public float cameraSensitivity;
-
     private Vector2 currentMovementInput;
-    private Vector2 mouseDelta;
+    public float jumpForce;
     public LayerMask groundLayer;
 
     [Header("Look")] 
     public Transform cameraContainer;
+    public float minXView;
+    public float maxXView;
+    private float camCurXRot;
+    public float cameraSensitivity;
+    private Vector2 mouseDelta;
 
     [HideInInspector]
     public bool canView=true;
@@ -57,8 +56,7 @@ public class PlayerController : MonoBehaviour
         move *= moveSpeed;
         move.y = rig.velocity.y;
 
-        rig.velocity = move;
-
+        rig.AddForce(move, ForceMode.VelocityChange);
     }
 
     private void CameraView()
@@ -78,13 +76,14 @@ public class PlayerController : MonoBehaviour
     public void MoveInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
-        {   
+        {
             currentMovementInput = context.ReadValue<Vector2>();
         }
         else if (context.phase == InputActionPhase.Canceled)
-        {   
+        {
             currentMovementInput = Vector2.zero;
         }
+
     }
 
     public void JumpInput(InputAction.CallbackContext context)
@@ -117,6 +116,16 @@ public class PlayerController : MonoBehaviour
             }
         }
         return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position + (transform.forward * 0.2f), Vector3.down);
+        Gizmos.DrawRay(transform.position + (-transform.forward * 0.2f),Vector3.down);
+        Gizmos.DrawRay(transform.position + (transform.right * 0.2f),Vector3.down);
+        Gizmos.DrawRay(transform.position + (-transform.right * 0.2f),Vector3.down);
+        
     }
 
     public void ToggleCursor(bool toggle)
