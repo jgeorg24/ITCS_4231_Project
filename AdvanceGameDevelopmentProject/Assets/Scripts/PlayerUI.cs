@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
-public class PlayerUI : MonoBehaviour
+public class PlayerUI : MonoBehaviour, IDamagable
 {
     //public Image Death;
     public Bar health;
@@ -10,25 +12,41 @@ public class PlayerUI : MonoBehaviour
     public Bar thirst;
     public float hungerHealthDecay;
     public float thirstHealthDecay;
-    public static PlayerUI instance;
+    public static PlayerUI Instance { get; set; }
+
+    public UnityEvent onDamage;
+    // Player Health //
+    private float currentHealth, maxHealth;
+
+    // Player Hunger //
+    private float currentHunger, maxHunger;
+
+    // Player Thirst //
+    private float currentThirst, maxThirst;
 
     void Awake()
     {
-        instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        } else {
+            Instance = this;
+        }
     }
 
-    // Start is called before the first frame update
     void Start()
-    {
+    {   
         health.currentValue = health.startValue;
         hunger.currentValue = hunger.startValue;
         thirst.currentValue = thirst.startValue;
-
     }
+        
 
-    // Update is called once per frame
     void Update()
     {
+        float fillValue = currentHealth / maxHealth;
+        ;
+
         hunger.Subtract(hunger.decayRate*Time.deltaTime);
         thirst.Subtract(thirst.decayRate*Time.deltaTime);
         
@@ -39,17 +57,24 @@ public class PlayerUI : MonoBehaviour
         
         if (thirst.currentValue == 0.0f)
         {
-            health.Subtract(hungerHealthDecay * Time.deltaTime);
+            health.Subtract(thirstHealthDecay * Time.deltaTime);
         }
         
         if (health.currentValue == 0.0f)
         {
             Die();
         }
-        
+
+        health.uiBar.value = health.GetPercentage();
+        hunger.uiBar.value = hunger.GetPercentage();
+        thirst.uiBar.value = thirst.GetPercentage();
         //health.uiBar.fillAmount = health.GetPercentage();
         //hunger.uiBar.fillAmount = hunger.GetPercentage();
         //thirst.uiBar.fillAmount = thirst.GetPercentage();
+        health.counter.text = health.currentValue + "/" + health.maxValue;
+        hunger.counter.text = hunger.currentValue + "/" + hunger.maxValue;
+        thirst.counter.text = thirst.currentValue + "/" + thirst.maxValue;
+
     }
 
     public void Heal(float amount)
@@ -75,6 +100,12 @@ public class PlayerUI : MonoBehaviour
         //SceneManager.LoadScene("Menu");
         
     }
+	
+	public void TakeDamage(int amount)
+	{
+		health.Subtract(amount);
+		onDamage?.Invoke();
+	}
 }
 
 [System.Serializable]
@@ -85,7 +116,9 @@ public class Bar
     public float maxValue;
     public float startValue;
     public float decayRate;
-    //public Image uiBar;
+    public Slider uiBar;
+    public Text counter;
+
 
     public void Add(float amount)
     {
@@ -101,4 +134,9 @@ public class Bar
     {
         return currentValue / maxValue;
     }
+}
+
+public interface IDamagable
+{
+    void TakeDamage(int damageAmount);
 }
