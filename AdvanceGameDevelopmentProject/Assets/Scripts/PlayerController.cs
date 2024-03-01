@@ -6,38 +6,60 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
+    [Header("Player Movement")]
     public float moveSpeed;
     private Vector2 currentMovementInput;
     public float jumpForce;
     public LayerMask groundLayer;
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public bool isGrounded;
 
-    [Header("Look")] 
+    [Header("Player View")] 
     public Transform cameraContainer;
     public float minXView;
     public float maxXView;
-    private float camCurXRot;
+    private float camXRot;
     public float cameraSensitivity;
+
+    [Header("Fall Damage")] 
+    public float fallDamageThreshold = 1;
+    public float damageMultiplier = 5;
+
+
     private Vector2 mouseDelta;
 
     [HideInInspector]
-    public bool canView=true;
+    public bool canView = true;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        rig = GetComponent<Rigidbody>();
+
     }
 
     private Rigidbody rig;
-    public static PlayerController instance;
+    private PlayerUI playerUI;
+
+    public static PlayerController Instance;
     private void Awake()
     {
-        rig = GetComponent<Rigidbody>();
-        instance = this;
+        playerUI = PlayerUI.Instance;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     void FixedUpdate()
     {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundLayer);
+
         Movement();
     }
 
@@ -56,14 +78,14 @@ public class PlayerController : MonoBehaviour
         move *= moveSpeed;
         move.y = rig.velocity.y;
 
-        rig.AddForce(move, ForceMode.VelocityChange);
+        rig.velocity = move;
     }
 
     private void CameraView()
     {
-        camCurXRot += mouseDelta.y * cameraSensitivity;
-        camCurXRot = Mathf.Clamp(camCurXRot, minXView, maxXView);
-        cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0);
+        camXRot += mouseDelta.y * cameraSensitivity;
+        camXRot = Mathf.Clamp(camXRot, minXView, maxXView);
+        cameraContainer.localEulerAngles = new Vector3(-camXRot, 0, 0);
         transform.eulerAngles += new Vector3(0, mouseDelta.x * cameraSensitivity, 0);
 
     }
@@ -88,34 +110,42 @@ public class PlayerController : MonoBehaviour
 
     public void JumpInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started)
+        if (context.phase == InputActionPhase.Performed)
         {
-            if (isGrounded())
+
+            if (isGrounded == true)
             {
-                rig.AddForce(Vector3.up*jumpForce, ForceMode.Impulse);
-                
+                rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
+
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Obstacle"))
+        {
+            float fallVelocity = Mathf.Abs(transform.position.y - collision.contacts[0].point.y);
+
+            Debug.Log("Fall Velocity: " + fallVelocity);
+            Debug.Log("Fall Damage Threshold: " + fallDamageThreshold);
+            Debug.Log("Do Damage: " + (fallVelocity > fallDamageThreshold));
+
+            float calculatedDamage = (fallVelocity - fallDamageThreshold) * damageMultiplier;
+            Debug.Log("Fall Damage: " + calculatedDamage);
+
+            if (calculatedDamage > 0)
+            {
+                ApplyFallDamage(calculatedDamage);
             }
         }
     }
 
-    bool isGrounded()
+    void ApplyFallDamage(float damage)
     {
-        Ray[] rays = new Ray[4]
-        {
-            new Ray(transform.position + (transform.forward * 0.2f)+(Vector3.up*0.01f),Vector3.down),
-            new Ray(transform.position + (-transform.forward * 0.2f)+(Vector3.up*0.01f),Vector3.down),
-            new Ray(transform.position + (transform.right * 0.2f)+(Vector3.up*0.01f),Vector3.down),
-            new Ray(transform.position + (-transform.right * 0.2f)+(Vector3.up*0.01f),Vector3.down)
-
-        };
-        for (int i = 0; i < rays.Length; i++)
-        {
-            if (Physics.Raycast(rays[i], 0.1f, groundLayer))
-            {
-                return true;
-            }
-        }
-        return false;
+        // Apply the fall damage
+        Debug.Log("Fall Damage: " + damage);
+        playerUI.TakeDamage((int)damage);
     }
 
     private void OnDrawGizmos()

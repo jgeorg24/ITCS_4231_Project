@@ -68,9 +68,7 @@ public class PlayerUI : MonoBehaviour, IDamagable
         health.uiBar.value = health.GetPercentage();
         hunger.uiBar.value = hunger.GetPercentage();
         thirst.uiBar.value = thirst.GetPercentage();
-        //health.uiBar.fillAmount = health.GetPercentage();
-        //hunger.uiBar.fillAmount = hunger.GetPercentage();
-        //thirst.uiBar.fillAmount = thirst.GetPercentage();
+
         health.counter.text = health.currentValue + "/" + health.maxValue;
         hunger.counter.text = hunger.currentValue + "/" + hunger.maxValue;
         thirst.counter.text = thirst.currentValue + "/" + thirst.maxValue;
@@ -95,6 +93,7 @@ public class PlayerUI : MonoBehaviour, IDamagable
     public void Die()
     {
         //Death.GetComponent<Animation>().Play("You Are Dead");
+        //Debug.Log("Player has died");
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         //SceneManager.LoadScene("Menu");

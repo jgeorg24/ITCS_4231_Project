@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipToolAxe : Equip
+public class EquipToolAxe : MonoBehaviour
 {
     public float attackRate;
     public float attackdistance;
@@ -12,31 +12,17 @@ public class EquipToolAxe : Equip
     [Header("Combat")] 
     public bool doesDealDamage;
     public int damage;
-
-    [Header("Resource Gathering")]
-    public bool doesGatherresources;
-
-    private Animator anim;
-    private Camera cam;
+    public Animator anim;
+    public Camera cam;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        cam = Camera.main;
     }
 
-    public override void OnAttackInput()
+    public void OnAttackInput()
     {
-        if (!attack)
-        {
-            attack = true;
-            anim.SetTrigger("Attack");
-            Invoke("OnCanAttack",attackRate);
-        }
-    }
-    void OnCanAttack()
-    {
-        attack = false;
+        anim.SetTrigger("Attack");
     }
 
     public void OnHit()
