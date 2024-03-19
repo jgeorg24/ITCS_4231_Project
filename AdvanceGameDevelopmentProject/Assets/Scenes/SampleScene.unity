@@ -674,11 +674,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d87fe861b03b24a9650c83bb5ef3d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quickSlots: {fileID: 0}
-  quickSlotsList: []
-  numbersHolder: {fileID: 0}
-  selectedNumber: -1
-  selectedItem: {fileID: 0}
   toolHolder: {fileID: 388515457}
   currentEquip: {fileID: 1282198589}
 --- !u!1 &362528725
