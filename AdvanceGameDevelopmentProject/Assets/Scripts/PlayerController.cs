@@ -26,12 +26,25 @@ public class PlayerController : MonoBehaviour
     public float fallDamageThreshold = 1;
     public float damageMultiplier = 5;
 
-
+    public Animator anim;
+    public Camera cam;
     private Vector2 mouseDelta;
 
     [HideInInspector]
     public bool canView = true;
+    public float speed;
 
+    [System.Serializable]
+    public class AnimationStrings
+    {
+        public string sprint = "sprint";
+        public string aim = "aim";
+        public string pull = "pullString";
+        public string fire = "fire";
+    }
+    [SerializeField]
+    public AnimationStrings animStrings;
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -59,6 +72,10 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundLayer);
+        if (isGrounded == true)
+        {
+            anim.SetBool("isGrounded", true);
+        }
 
         Movement();
     }
@@ -79,6 +96,9 @@ public class PlayerController : MonoBehaviour
         move.y = rig.velocity.y;
 
         rig.velocity = move;
+        speed = Vector3.Magnitude(rig.velocity);
+        Debug.Log("Speed: " + speed);
+
     }
 
     private void CameraView()
@@ -115,6 +135,7 @@ public class PlayerController : MonoBehaviour
 
             if (isGrounded == true)
             {
+                anim.SetTrigger("Jump");
                 rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
 
@@ -127,12 +148,12 @@ public class PlayerController : MonoBehaviour
         {
             float fallVelocity = Mathf.Abs(transform.position.y - collision.contacts[0].point.y);
 
-            Debug.Log("Fall Velocity: " + fallVelocity);
-            Debug.Log("Fall Damage Threshold: " + fallDamageThreshold);
-            Debug.Log("Do Damage: " + (fallVelocity > fallDamageThreshold));
+            //Debug.Log("Fall Velocity: " + fallVelocity);
+            //Debug.Log("Fall Damage Threshold: " + fallDamageThreshold);
+            //Debug.Log("Do Damage: " + (fallVelocity > fallDamageThreshold));
 
             float calculatedDamage = (fallVelocity - fallDamageThreshold) * damageMultiplier;
-            Debug.Log("Fall Damage: " + calculatedDamage);
+            //Debug.Log("Fall Damage: " + calculatedDamage);
 
             if (calculatedDamage > 0)
             {
@@ -162,5 +183,19 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         canView = !toggle;
+    }
+    public void CharacterAim(bool aiming)
+    {
+        anim.SetBool(animStrings.aim, aiming);
+    }
+
+    public void CharacterPullString(bool pull)
+    {
+        anim.SetBool(animStrings.pull, pull);
+    }
+
+    public void CharacterFireArrow()
+    {
+        anim.SetTrigger(animStrings.fire);
     }
 }
