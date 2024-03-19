@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
         rig.velocity = move;
         speed = Vector3.Magnitude(rig.velocity);
-        Debug.Log("Speed: " + speed);
+        //Debug.Log("Speed: " + speed);
 
     }
 
