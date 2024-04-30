@@ -8,22 +8,13 @@ using TMPro;
 public class PlayerUI : MonoBehaviour, IDamagable
 {
     //public Image Death;
-    public Bar health;
-    public Bar hunger;
-    public Bar thirst;
+    public PlayerBar health;
+    public PlayerBar hunger;
+    public PlayerBar thirst;
     public float hungerHealthDecay;
     public float thirstHealthDecay;
     public static PlayerUI Instance { get; set; }
-
-    public UnityEvent onDamage = new UnityEvent();
-    // Player Health //
-    private float currentHealth, maxHealth;
-
-    // Player Hunger //
-    private float currentHunger, maxHunger;
-
-    // Player Thirst //
-    private float currentThirst, maxThirst;
+    private float deltaTime;
 
     void Awake()
     {
@@ -45,20 +36,20 @@ public class PlayerUI : MonoBehaviour, IDamagable
 
     void Update()
     {
-        float fillValue = currentHealth / maxHealth;
+        deltaTime = Time.deltaTime;
 
-        health.Subtract(health.decayRate * Time.deltaTime);
-        hunger.Subtract(hunger.decayRate * Time.deltaTime);
-        thirst.Subtract(thirst.decayRate * Time.deltaTime);
+        health.Subtract(health.decayRate * deltaTime);
+        hunger.Subtract(hunger.decayRate * deltaTime);
+        thirst.Subtract(thirst.decayRate * deltaTime);
         
         if (hunger.currentValue == 0.0f)
         {
-            health.Subtract(hungerHealthDecay * Time.deltaTime);
+            health.Subtract(hungerHealthDecay * deltaTime);
         }
         
         if (thirst.currentValue == 0.0f)
         {
-            health.Subtract(thirstHealthDecay * Time.deltaTime);
+            health.Subtract(thirstHealthDecay * deltaTime);
         }
         
         if (health.currentValue == 0.0f)
@@ -101,18 +92,14 @@ public class PlayerUI : MonoBehaviour, IDamagable
         
     }
 	
-    // NEEDS WORK
 	public void TakeDamage(int amount)
 	{
 		health.Subtract(amount);
-        Debug.Log("Passed subtract " + amount);
-        //onDamage?.Invoke();
-        Debug.Log("Passed OnDamage");
     }
 }
 
 [System.Serializable]
-public class Bar
+public class PlayerBar
 {   
     [HideInInspector]
     public float currentValue;

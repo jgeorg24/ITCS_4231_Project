@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     public float fallDamageThreshold = 1;
     public float damageMultiplier = 5;
 
-    // public Animator anim;
+    public Animator anim;
     public Camera cam;
     private Vector2 mouseDelta;
 
@@ -97,7 +97,6 @@ public class PlayerController : MonoBehaviour
 
         rig.velocity = move;
         speed = Vector3.Magnitude(rig.velocity);
-        //Debug.Log("Speed: " + speed);
 
     }
 
@@ -147,13 +146,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Obstacle"))
         {
             float fallVelocity = Mathf.Abs(transform.position.y - collision.contacts[0].point.y);
-
-            //Debug.Log("Fall Velocity: " + fallVelocity);
-            //Debug.Log("Fall Damage Threshold: " + fallDamageThreshold);
-            //Debug.Log("Do Damage: " + (fallVelocity > fallDamageThreshold));
-
             float calculatedDamage = (fallVelocity - fallDamageThreshold) * damageMultiplier;
-            //Debug.Log("Fall Damage: " + calculatedDamage);
 
             if (calculatedDamage > 0)
             {
@@ -164,8 +157,6 @@ public class PlayerController : MonoBehaviour
 
     void ApplyFallDamage(float damage)
     {
-        // Apply the fall damage
-        //Debug.Log("Fall Damage: " + damage);
         playerUI.TakeDamage((int)damage);
     }
 

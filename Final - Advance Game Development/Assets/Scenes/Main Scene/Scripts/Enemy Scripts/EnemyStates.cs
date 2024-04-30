@@ -18,7 +18,13 @@ public class EnemyStates : MonoBehaviour
     // Private unchangeable variables
     private EnemyState currentState;
     private PlayerUI playerUI;
-    private int damageEnemyOne = 15;
+    
+    public float attackRange = 2f;
+    public float attackDamage = 10f;
+    public float attackCooldown = 1f;
+    public float knockbackForce = 10f;
+    private float lastAttackTime;
+    private bool isAttacking;
 
     private enum EnemyState
     {
@@ -27,55 +33,50 @@ public class EnemyStates : MonoBehaviour
         Attack
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        if (target != null)
+        if (target == null)
         {
-            target = target.transform;
-            currentState = EnemyState.Patrol;
-
-            // Check player distance and update state every second
-            InvokeRepeating("UpdateEnemyState", 0f, 1f); 
+            Debug.LogError("Target not assigned to EnemyStates.");
+            return;
         }
+
+        currentState = EnemyState.Patrol;
+        playerUI = PlayerUI.Instance;
+
+        if (playerUI == null)
+        {
+            Debug.LogError("PlayerUI instance not found.");
+            return;
+        }
+
+        InvokeRepeating(nameof(UpdateEnemyState), 0f, 1f);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UpdateEnemyState()
     {
-        if (target != null)
+        float distanceToTarget; // Declare distanceToTarget outside of the if statement
+        if (currentState == EnemyState.Attack || isAttacking)
         {
-            Vector3 direction = target.position - transform.position;
+            distanceToTarget = Vector3.Distance(transform.position, target.position);
+            if (distanceToTarget > attackRange)
+            {
+                currentState = EnemyState.Chase; // Transition to Chase state if out of attack range
+                StopAttack(); // Stop attacking
+            }
+            return;
         }
 
-        // Depending on the state of the enemy it'll patrol, chase, or attack
-        if (currentState == EnemyState.Patrol)
-        {
-            Patrolling();
-        }
-        else if (currentState == EnemyState.Chase)
-        {
-            ChaseTarget();
-        }
-        else if (currentState == EnemyState.Attack)
-        {
-            AttackTarget(damageEnemyOne);
-        }
-    }
+        distanceToTarget = Vector3.Distance(transform.position, target.position); // Assign distanceToTarget here
 
-    void UpdateEnemyState() 
-    {
-        // Calculate distance between the enemy and the player
-        float distanceToTarget = Vector3.Distance(transform.position, target.position);
-
-        // Check if the player is within the chasing distance
-        if (distanceToTarget <= chaseDistance)
-        {
-            currentState = EnemyState.Chase;
-        }
-        else if (currentState != EnemyState.Attack && IsPlayerInRange())
+        if (distanceToTarget <= attackRange)
         {
             currentState = EnemyState.Attack;
+            StartCoroutine(AttackPlayer());
+        }
+        else if (distanceToTarget <= chaseDistance)
+        {
+            currentState = EnemyState.Chase;
         }
         else
         {
@@ -83,50 +84,90 @@ public class EnemyStates : MonoBehaviour
         }
     }
 
-    bool IsPlayerInRange()
+    private void Update()
     {
-        // Calculate direction to the player
-        Vector3 direction = (target.position - transform.position).normalized;
-
-        // Perform a spherecast to check for collision with the player
-        RaycastHit hit;
-
-        if (Physics.SphereCast(transform.position, sphereSize, direction, out hit, maxDistance))
+        switch (currentState)
         {
-            if (hit.collider.CompareTag("Player"))
-            {
-                Debug.Log("YES");
-                return true;
-            }
+            case EnemyState.Patrol:
+                Patrolling();
+                break;
+            case EnemyState.Chase:
+                ChaseTarget();
+                break;
         }
-
-        Debug.DrawLine(transform.position, transform.position + direction * maxDistance, Color.green);
-
-        return false;
     }
 
-    void ChaseTarget()
+    private void ChaseTarget()
     {
-        // Has the agent chase the specified target
-        agent.SetDestination(target.position);
+        if (agent != null)
+            agent.SetDestination(target.position);
     }
 
-    void AttackTarget(int damage)
+    private void Patrolling()
     {
-        // Do damage to the target
-        playerUI.TakeDamage((int) damage);
+        if (agent == null)
+            return;
+
+        if (!agent.hasPath || agent.remainingDistance < 0.5f)
+        {
+            Vector3 randomPatrolPoint = UnityEngine.Random.insideUnitSphere * patrolDistance;
+            NavMesh.SamplePosition(randomPatrolPoint, out NavMeshHit hit, patrolDistance, 1);
+            agent.SetDestination(hit.position);
+        }
     }
 
-    void Patrolling() 
+    private System.Collections.IEnumerator AttackPlayer()
     {
-        // Generate random destination within patrol area
-        Vector3 randomPatrolPoint = UnityEngine.Random.insideUnitSphere * patrolDistance;
-        randomPatrolPoint += transform.position;
+        isAttacking = true;
+        bool hasDamagedPlayer = false;
+        
+        while (currentState == EnemyState.Attack)
+        {
+            if (!hasDamagedPlayer && Time.time - lastAttackTime > attackCooldown)
+            {
+                DamagePlayer(attackDamage);
+                lastAttackTime = Time.time;
+                hasDamagedPlayer = true;
+            }
+            yield return null;
+        }
+        
+        isAttacking = false;
+    }
 
-        NavMeshHit hit;
-        NavMesh.SamplePosition(randomPatrolPoint, out hit, patrolDistance, 1);
+private void DamagePlayer(float damageAmount)
+{
+    playerUI.TakeDamage((int)damageAmount);
 
-        // Set patrol destination
-        agent.SetDestination(hit.position);
+    // Calculate knockback direction (upwards and backwards from player to enemy)
+    Vector3 knockbackDirection = (target.position - transform.position).normalized;
+    knockbackDirection.y = 0; // Ignore vertical component
+    knockbackDirection.Normalize(); // Ensure unit length for diagonal knockback
+    
+    // Apply knockback force to the player
+    Rigidbody playerRigidbody = target.GetComponent<Rigidbody>();
+    if (playerRigidbody != null)
+    {
+        playerRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse); // Backwards force
+        playerRigidbody.AddForce(Vector3.up * knockbackForce, ForceMode.Impulse); // Upwards force
+    }
+}
+
+    private void StopAttack()
+    {
+        currentState = EnemyState.Chase; // Transition to Chase state
+        isAttacking = false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, chaseDistance);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, patrolDistance);
     }
 }
