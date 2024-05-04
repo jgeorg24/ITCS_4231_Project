@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public Image image; // This keeps track of the item's picture.
+    public RawImage image; // This keeps track of the item's picture.
 
     [HideInInspector] public Transform parentAfterDrag; // This remembers where the item should go back after being dragged.
 
