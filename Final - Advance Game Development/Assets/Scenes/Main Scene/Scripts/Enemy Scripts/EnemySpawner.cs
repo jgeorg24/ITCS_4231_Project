@@ -12,12 +12,34 @@ public class EnemySpawner : MonoBehaviour
     public float minDistanceFromPlayer = 5f;
     public float yOffset = 1f;
 
+    // Private unchangeable variables
+    private CountdownTimer countdownTimer;
+    private float halfOfTime;
+    private bool isEnemySpawned = false;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        // Find and assign the CountdownTimer component
+        countdownTimer = FindObjectOfType<CountdownTimer>();
+
+        if (countdownTimer == null)
+        {
+            Debug.LogError("CountdownTimer component not found");
+        }
+        else
+        {
+            halfOfTime = countdownTimer.totalTime / 2;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if ((int) countdownTimer.timeRemaining == halfOfTime && isEnemySpawned == false)
         {
             SpawnEnemy();
+            isEnemySpawned = true;
         }
     }
 
@@ -61,11 +83,5 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log("Spawn position: " + spawnPosition);
 
         return spawnPosition;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
     }
 }

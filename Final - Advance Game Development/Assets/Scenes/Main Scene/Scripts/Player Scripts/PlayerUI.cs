@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerUI : MonoBehaviour, IDamagable
 {
@@ -51,17 +52,17 @@ public class PlayerUI : MonoBehaviour, IDamagable
         hunger.Subtract(hunger.decayRate * Time.deltaTime);
         thirst.Subtract(thirst.decayRate * Time.deltaTime);
         
-        if (hunger.currentValue == 0.0f)
+        if (hunger.currentValue <= 0.0f)
         {
             health.Subtract(hungerHealthDecay * Time.deltaTime);
         }
         
-        if (thirst.currentValue == 0.0f)
+        if (thirst.currentValue <= 0.0f)
         {
             health.Subtract(thirstHealthDecay * Time.deltaTime);
         }
         
-        if (health.currentValue == 0.0f)
+        if (health.currentValue <= 0.0f)
         {
             Die();
         }
@@ -94,20 +95,17 @@ public class PlayerUI : MonoBehaviour, IDamagable
     public void Die()
     {
         //Death.GetComponent<Animation>().Play("You Are Dead");
-        //Debug.Log("Player has died");
+        Debug.Log("Player has died");
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        //SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MenuScene");
         
     }
 	
-    // NEEDS WORK
 	public void TakeDamage(int amount)
 	{
 		health.Subtract(amount);
-        Debug.Log("Passed subtract " + amount);
-        //onDamage?.Invoke();
-        Debug.Log("Passed OnDamage");
+        onDamage?.Invoke();
     }
 }
 

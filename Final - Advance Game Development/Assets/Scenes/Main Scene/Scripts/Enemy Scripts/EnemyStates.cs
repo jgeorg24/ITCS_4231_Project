@@ -17,9 +17,18 @@ public class EnemyStates : MonoBehaviour
 
     // Private unchangeable variables
     private EnemyState currentState;
-    private PlayerUI playerUI;
     private int damageEnemyOne = 15;
+    private bool isPlayerInRange = false;
+    private float cooldownAttack = 0f;
 
+    /*public float attackRange = 2f;
+    public float attackDamage = 10f;
+    public float attackCooldown = 1f;
+    public float knockbackForce = 10f;
+    private float lastAttackTime;
+    private bool isAttacking;*/
+
+    // States of the enemy AI
     private enum EnemyState
     {
         Patrol,
@@ -36,16 +45,32 @@ public class EnemyStates : MonoBehaviour
             currentState = EnemyState.Patrol;
 
             // Check player distance and update state every second
-            InvokeRepeating("UpdateEnemyState", 0f, 1f); 
+            InvokeRepeating("UpdateEnemyState", 0f, 1f);
+        }
+        else if (target == null)
+        {
+            Debug.LogError("Target not assigned to EnemyStates.");
+
+            return;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Checking to see if the target is null
         if (target != null)
         {
             Vector3 direction = target.position - transform.position;
+        }
+
+        // Decreasing the attack cooldown
+        cooldownAttack -= Time.deltaTime;
+
+        // Cooldown for following player and attacking
+        if (cooldownAttack <= 0)
+        {
+            agent.isStopped = false;
         }
 
         // Depending on the state of the enemy it'll patrol, chase, or attack
@@ -69,13 +94,13 @@ public class EnemyStates : MonoBehaviour
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
         // Check if the player is within the chasing distance
-        if (distanceToTarget <= chaseDistance)
-        {
-            currentState = EnemyState.Chase;
-        }
-        else if (currentState != EnemyState.Attack && IsPlayerInRange())
+        if (currentState != EnemyState.Attack && isPlayerInRange)
         {
             currentState = EnemyState.Attack;
+        }
+        else if (distanceToTarget <= chaseDistance)
+        {
+            currentState = EnemyState.Chase;
         }
         else
         {
@@ -83,26 +108,19 @@ public class EnemyStates : MonoBehaviour
         }
     }
 
-    bool IsPlayerInRange()
+    private void OnCollisionEnter(Collision collision)
     {
-        // Calculate direction to the player
-        Vector3 direction = (target.position - transform.position).normalized;
-
-        // Perform a spherecast to check for collision with the player
-        RaycastHit hit;
-
-        if (Physics.SphereCast(transform.position, sphereSize, direction, out hit, maxDistance))
+        if (cooldownAttack <= 0)
         {
-            if (hit.collider.CompareTag("Player"))
+            if (collision.collider.CompareTag("Player"))
             {
-                Debug.Log("YES");
-                return true;
+                isPlayerInRange = true;
+            }
+            else
+            {
+                isPlayerInRange = false;
             }
         }
-
-        Debug.DrawLine(transform.position, transform.position + direction * maxDistance, Color.green);
-
-        return false;
     }
 
     void ChaseTarget()
@@ -113,8 +131,27 @@ public class EnemyStates : MonoBehaviour
 
     void AttackTarget(int damage)
     {
-        // Do damage to the target
-        playerUI.TakeDamage((int) damage);
+        // Find the player game object
+        GameObject player = GameObject.FindWithTag("Player");
+
+        // Checks to see if player is found
+        if (player != null)
+        {
+            // Sends the UI to take damage
+            PlayerUI playerUIComponent = player.GetComponent<PlayerUI>();
+
+            if (playerUIComponent != null && cooldownAttack <= 0)
+            {
+                playerUIComponent.TakeDamage(damage);
+                agent.isStopped = true;
+                isPlayerInRange = false;
+                cooldownAttack = 1f;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("PlayerUI component not found on the player GameObject");
+        }
     }
 
     void Patrolling() 
