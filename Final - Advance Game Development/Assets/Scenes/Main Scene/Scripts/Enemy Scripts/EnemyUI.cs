@@ -6,6 +6,7 @@ public class EnemyUI : MonoBehaviour, IDamagable
 {
     public EnemyBar health;
     public Camera mainCamera;
+    public Transform target; // Reference to the enemy's transform
 
     private void Start()
     {
@@ -17,11 +18,17 @@ public class EnemyUI : MonoBehaviour, IDamagable
         health.uiBar.value = health.GetPercentage();
         health.counter.text = ((int)health.currentValue).ToString() + "/" + health.maxValue.ToString();
 
-        // Billboard the health bar towards the camera
-        if (mainCamera != null)
+        // Ensure the target (enemy's transform) is not null and the main camera is not null
+        if (target != null && mainCamera != null)
         {
-            transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward,
-            mainCamera.transform.rotation * Vector3.up);
+            // Calculate the direction from the health bar to the camera
+            Vector3 toCameraDirection = mainCamera.transform.position - transform.position;
+
+            // Face the health bar towards the camera
+            transform.rotation = Quaternion.LookRotation(toCameraDirection, Vector3.up);
+
+            // Optionally, align the health bar with the enemy's orientation
+            transform.rotation *= target.rotation;
         }
     }
 

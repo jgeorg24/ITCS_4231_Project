@@ -25,25 +25,13 @@ public class PlayerController : MonoBehaviour
     [Header("Fall Damage")] 
     public float fallDamageThreshold = 1;
     public float damageMultiplier = 5;
-
-    public Animator anim;
+    
     public Camera cam;
     private Vector2 mouseDelta;
 
     [HideInInspector]
     public bool canView = true;
     public float speed;
-
-    [System.Serializable]
-    public class AnimationStrings
-    {
-        public string sprint = "sprint";
-        public string aim = "aim";
-        public string pull = "pullString";
-        public string fire = "fire";
-    }
-    [SerializeField]
-    public AnimationStrings animStrings;
     
     void Start()
     {
@@ -174,19 +162,5 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         canView = !toggle;
-    }
-    public void CharacterAim(bool aiming)
-    {
-        //anim.SetBool(animStrings.aim, aiming);
-    }
-
-    public void CharacterPullString(bool pull)
-    {
-        //anim.SetBool(animStrings.pull, pull);
-    }
-
-    public void CharacterFireArrow()
-    {
-        //anim.SetTrigger(animStrings.fire);
     }
 }
