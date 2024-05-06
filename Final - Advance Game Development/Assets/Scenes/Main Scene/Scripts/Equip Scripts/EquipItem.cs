@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EquipItem : MonoBehaviour
 {
-    [HideInInspector] public Transform parentAfterDrag;
-    [HideInInspector] public InventorySlot equippedSlot;
+    //[HideInInspector] public Transform parentAfterDrag;
+    //[HideInInspector] public InventorySlot equippedSlot;
 
     private void Start()
     {
