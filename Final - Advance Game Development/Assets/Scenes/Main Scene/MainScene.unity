@@ -519,11 +519,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1990658941175673084, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1122.53
+      value: 1122
       objectReference: {fileID: 0}
     - target: {fileID: 1990658941175673084, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 62.433002
+      value: 62
       objectReference: {fileID: 0}
     - target: {fileID: 1990658941175673084, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: m_LocalPosition.z
@@ -582,6 +582,10 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1990658941175673087, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
+      propertyPath: attackRate
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990658941175673087, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 2075409400}
@@ -589,6 +593,10 @@ PrefabInstance:
       propertyPath: health.uiBar
       value: 
       objectReference: {fileID: 1026275609}
+    - target: {fileID: 1990658941175673087, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
+      propertyPath: attackDistance
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1990658941175673087, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: health.counter
       value: 
@@ -607,7 +615,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1990658941175673084, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       insertIndex: -1
       addedObject: {fileID: 774446061}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1990658941175673086, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 128988337}
   m_SourcePrefab: {fileID: 100100000, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
 --- !u!1 &128988329 stripped
 GameObject:
@@ -619,6 +630,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1990658941175673084, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
   m_PrefabInstance: {fileID: 128988328}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &128988337
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128988329}
+  serializedVersion: 4
+  m_Mass: 20
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &130551261
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,7 +967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 203873798}
   - component: {fileID: 203873799}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: NavMeshSurface
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -3974,7 +4012,7 @@ GameObject:
   - component: {fileID: 855658610}
   - component: {fileID: 855658612}
   - component: {fileID: 855658611}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Terrain
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -6206,6 +6244,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7414060336482474506, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
   m_PrefabInstance: {fileID: 1483094013}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &1459370577
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459370563}
+  serializedVersion: 4
+  m_Mass: 40
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1467881896 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6071468803164037491, guid: ccd1d170294a24664918ddb54b5996e0, type: 3}
@@ -6308,15 +6373,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7414060336482474506, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1123.36
+      value: 1123
       objectReference: {fileID: 0}
     - target: {fileID: 7414060336482474506, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 63.01
+      value: 61.7
       objectReference: {fileID: 0}
     - target: {fileID: 7414060336482474506, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3034.39
+      value: 3035
       objectReference: {fileID: 0}
     - target: {fileID: 7414060336482474506, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6396,7 +6461,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7414060336482474506, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1890168852}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7414060336482474510, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1459370577}
   m_SourcePrefab: {fileID: 100100000, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
 --- !u!1 &1487591020
 GameObject:
@@ -7361,7 +7429,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608374775}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 30
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -7428,10 +7496,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  jumpForce: 250
+  jumpForce: 300
   groundLayer:
     serializedVersion: 2
-    m_Bits: 567
+    m_Bits: 4294967295
   groundCheck: {fileID: 1070080635}
   groundDistance: 0.4
   isGrounded: 0
@@ -7440,7 +7508,7 @@ MonoBehaviour:
   maxXView: 80
   cameraSensitivity: 0.25
   fallDamageThreshold: 1.2
-  damageMultiplier: 30
+  damageMultiplier: 40
   cam: {fileID: 2075409400}
   canView: 1
   speed: 0

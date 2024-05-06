@@ -61,10 +61,6 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundLayer);
-        if (isGrounded == true)
-        {
-            //anim.SetBool("isGrounded", true);
-        }
 
         Movement();
     }
@@ -123,7 +119,6 @@ public class PlayerController : MonoBehaviour
 
             if (isGrounded == true)
             {
-                //anim.SetTrigger("Jump");
                 rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
 
