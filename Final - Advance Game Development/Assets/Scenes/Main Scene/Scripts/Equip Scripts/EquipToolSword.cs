@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipToolSword : Equip
+public class EquipToolSword : EquipItem
 {
     public float attackRate;
     public float attackRange;

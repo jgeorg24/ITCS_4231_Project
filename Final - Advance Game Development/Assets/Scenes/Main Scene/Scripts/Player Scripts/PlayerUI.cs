@@ -96,6 +96,11 @@ public class PlayerUI : MonoBehaviour, IDamagable
 	{
 		health.Subtract(amount);
     }
+
+    public float GetHealth()
+	{
+		return health.currentValue;
+    }
 }
 
 [System.Serializable]

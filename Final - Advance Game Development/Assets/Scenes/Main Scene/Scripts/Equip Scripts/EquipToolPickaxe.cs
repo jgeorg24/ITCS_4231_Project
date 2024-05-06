@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipToolPickaxe : Equip
+public class EquipToolPickaxe : EquipItem
 {
     public float attackRate;
     public float attackRange;
@@ -46,7 +46,5 @@ public class EquipToolPickaxe : Equip
             }
             
         }
-    }
-    
-    
+    } 
 }

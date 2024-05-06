@@ -22,7 +22,6 @@ public class EnemyStates : MonoBehaviour
     public float attackRange = 2f;
     public float attackDamage = 10f;
     public float attackCooldown = 1f;
-    public float knockbackForce = 10f;
     private float lastAttackTime;
     private bool isAttacking;
 
@@ -135,23 +134,18 @@ public class EnemyStates : MonoBehaviour
         isAttacking = false;
     }
 
-private void DamagePlayer(float damageAmount)
-{
-    playerUI.TakeDamage((int)damageAmount);
-
-    // Calculate knockback direction (upwards and backwards from player to enemy)
-    Vector3 knockbackDirection = (target.position - transform.position).normalized;
-    knockbackDirection.y = 0; // Ignore vertical component
-    knockbackDirection.Normalize(); // Ensure unit length for diagonal knockback
-    
-    // Apply knockback force to the player
-    Rigidbody playerRigidbody = target.GetComponent<Rigidbody>();
-    if (playerRigidbody != null)
+    private void DamagePlayer(float damageAmount)
     {
-        playerRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse); // Backwards force
-        playerRigidbody.AddForce(Vector3.up * knockbackForce, ForceMode.Impulse); // Upwards force
+        float hp = playerUI.GetHealth();
+        playerUI.TakeDamage((int)damageAmount);
+        if (hp <= 0)
+            Die();
     }
-}
+
+    void Die()
+    {
+        Destroy(gameObject);
+    }
 
     private void StopAttack()
     {

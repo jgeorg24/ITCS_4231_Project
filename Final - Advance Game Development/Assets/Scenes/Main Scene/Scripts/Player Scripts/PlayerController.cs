@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rig;
     private PlayerUI playerUI;
+    public GameObject inventoryPanel; // Reference to your inventory panel
 
     public static PlayerController Instance;
     private void Awake()

@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3548543670300840875}
-  m_Mesh: {fileID: 2534964839176971238, guid: ee467669c670b5f46a01944db561aa70, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: 577821b331b20e346a79457606232edc, type: 3}
 --- !u!23 &3043881234293961342
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -61,9 +61,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7098565394360792512, guid: ee467669c670b5f46a01944db561aa70, type: 3}
-  - {fileID: -1139501467303870122, guid: ee467669c670b5f46a01944db561aa70, type: 3}
-  - {fileID: 5988347114677481029, guid: ee467669c670b5f46a01944db561aa70, type: 3}
+  - {fileID: 2100000, guid: f7ebf90318e22d14ba2b9db3099952a4, type: 2}
+  - {fileID: 2100000, guid: bec39a1b7e10f5f49ad8e94069500dfc, type: 2}
+  - {fileID: 2100000, guid: 18c9e94dd61f38949a78534f943fee84, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRate: 1
-  attackRange: 1
-  damage: 10
+  attackRange: 3
+  damage: 8
   anim: {fileID: 1095921939}
   cam: {fileID: 0}

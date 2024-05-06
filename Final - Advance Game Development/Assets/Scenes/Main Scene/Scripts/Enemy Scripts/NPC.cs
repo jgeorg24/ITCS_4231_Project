@@ -1,54 +1,55 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
+using TMPro;
 
 public enum AIType
 {
-    Passive,
-    Scared,
-    Aggressive
+    Passive,    // The NPC won't actively engage in combat.
+    Scared,     // The NPC will flee when the player is nearby.
+    Aggressive  // The NPC will attack the player when the player is nearby.
 }
 
 public enum AIState
 {
-    Idle,
-    Wandering,
-    Attacking,
-    Fleeing
+    Idle,       // NPC is not moving or performing any action.
+    Wandering,  // NPC is randomly moving around.
+    Attacking,  // NPC is actively attacking the player.
+    Fleeing     // NPC is fleeing from the player.
 }
 
 public class NPC : MonoBehaviour, IDamagable
 {
+    public NpcBar health;
+
     [Header("Stats")]
-    public int health;
-    public float walkSpeed;
-    public float runSpeed;
-    public ItemDatabase[] dropOnDeath;
+    public float walkSpeed;         // Speed at which NPC walks.
+    public float runSpeed;          // Speed at which NPC runs.
 
     [Header("AI")]
-    public AIType aiType;
-    private AIState aiState;
-    public float detectDistance;
-    public float safeDistance;
+    public AIType aiType;           // Type of AI behavior.
+    private AIState aiState;        // Current state of the NPC.
+    public float detectDistance;    // Distance at which NPC detects the player.
+    public float safeDistance;      // Distance at which NPC feels safe from the player.
 
     [Header("Wandering")]
-    public float minWanderDistance;
-    public float maxWanderDistance;
-    public float minWanderWaitTime;
-    public float maxWanderWaitTime;
+    public float minWanderDistance; // Minimum distance NPC wanders.
+    public float maxWanderDistance; // Maximum distance NPC wanders.
+    public float minWanderWaitTime; // Minimum time NPC waits before wandering again.
+    public float maxWanderWaitTime; // Maximum time NPC waits before wandering again.
 
     [Header("Combat")]
-    public int damage;
-    public float attackRate;
-    private float lastAttackTime;
-    public float attackDistance;
+    public int damage;              // Damage NPC deals.
+    public float attackRate;        // Rate at which NPC attacks.
+    private float lastAttackTime;   // Time when NPC last attacked.
+    public float attackDistance;    // Distance at which NPC attacks the player.
 
     [Header("Sound")]
     public AudioSource audioSource;
 
-    // Components
     private NavMeshAgent agent;
-    private Animator anim;
+    public Animator anim;
     private SkinnedMeshRenderer[] meshRenderers;
 
     private void Awake()
@@ -57,7 +58,6 @@ public class NPC : MonoBehaviour, IDamagable
         if (agent == null)
         {
             Debug.LogError("NavMeshAgent component not found on the NPC game object.");
-            // You might want to handle this situation appropriately, such as disabling the NPC or adding a NavMeshAgent component dynamically.
         }
         anim = GetComponentInChildren<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -66,6 +66,7 @@ public class NPC : MonoBehaviour, IDamagable
     private void Start()
     {
         SetState(AIState.Wandering);
+        health.currentValue = health.startValue;
     }
 
     private void Update()
@@ -86,6 +87,9 @@ public class NPC : MonoBehaviour, IDamagable
                 FleeingUpdate(playerDistance);
                 break;
         }
+
+        health.uiBar.value = health.GetPercentage();
+        health.counter.text = ((int)health.currentValue).ToString() + "/" + health.maxValue.ToString();
     }
 
     void PassiveUpdate(float playerDistance)
@@ -194,22 +198,18 @@ public class NPC : MonoBehaviour, IDamagable
 
     public void TakeDamage(int amount)
     {
-        health -= amount;
+        health.Subtract(amount);
 
         StartCoroutine(DamageFlash());
         if (aiType == AIType.Passive)
             SetState(AIState.Fleeing);
 
-        if (health <= 0)
+        if (health.currentValue <= 0)
             Die();
     }
 
     void Die()
     {
-        foreach (var drop in dropOnDeath)
-        {
-            Instantiate(drop.dropPrefab, transform.position, Quaternion.identity);
-        }
         anim.SetTrigger("Die");
         Destroy(gameObject, anim.GetCurrentAnimatorStateInfo(0).length);
     }
@@ -226,5 +226,31 @@ public class NPC : MonoBehaviour, IDamagable
         {
             meshRenderer.material.color = Color.white;
         }
+    }
+}
+
+[System.Serializable]
+public class NpcBar
+{
+    [HideInInspector]
+    public float currentValue;
+    public float maxValue;
+    public float startValue;
+    public Slider uiBar;
+    public TextMeshProUGUI counter;
+
+    public void Add(float amount)
+    {
+        currentValue = Mathf.Min(currentValue + amount, maxValue);
+    }
+
+    public void Subtract(float amount)
+    {
+        currentValue = Mathf.Max(currentValue - amount, 0);
+    }
+
+    public float GetPercentage()
+    {
+        return currentValue / maxValue;
     }
 }
