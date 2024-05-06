@@ -557,6 +557,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1990658941175673085, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
+      propertyPath: m_Size.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990658941175673085, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
+      propertyPath: m_ProvidesContacts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1990658941175673086, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: m_Name
       value: Enemy Bear
@@ -580,11 +588,11 @@ PrefabInstance:
     - target: {fileID: 1990658941175673087, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: health.uiBar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1026275609}
     - target: {fileID: 1990658941175673087, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: health.counter
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1634860042}
     - target: {fileID: 1990658941175673087, guid: 075cd0710d16d464a9fb76ed44e28658, type: 3}
       propertyPath: health.maxValue
       value: 120
@@ -1327,6 +1335,7 @@ MonoBehaviour:
   spawnRadius: 20
   minDistanceFromPlayer: 10
   yOffset: 2
+  spawnKey: 66
 --- !u!4 &349190014
 Transform:
   m_ObjectHideFlags: 0
@@ -3101,6 +3110,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 691813489}
   m_CullTransparentMesh: 1
+--- !u!114 &701971757 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5892100676067298255, guid: a1af7150540d3534eb8cc332242d61e4, type: 3}
+  m_PrefabInstance: {fileID: 1403531057}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -3210,6 +3230,10 @@ PrefabInstance:
     - target: {fileID: -8946432608171288494, guid: 88e10b96db2c9a049bd5162b618d1520, type: 3}
       propertyPath: damage
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8946432608171288494, guid: 88e10b96db2c9a049bd5162b618d1520, type: 3}
+      propertyPath: attackRate
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: -8946432608171288494, guid: 88e10b96db2c9a049bd5162b618d1520, type: 3}
       propertyPath: attackRange
@@ -4563,6 +4587,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 780291408}
   offset: {x: 0, y: 0, z: 0}
+--- !u!114 &1026275609 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5892100676067298255, guid: a1af7150540d3534eb8cc332242d61e4, type: 3}
+  m_PrefabInstance: {fileID: 1078277878}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1053779650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5124,6 +5159,7 @@ MonoBehaviour:
   spawnRadius: 20
   minDistanceFromPlayer: 10
   yOffset: 2
+  spawnKey: 89
 --- !u!4 &1121600963
 Transform:
   m_ObjectHideFlags: 0
@@ -6325,14 +6361,14 @@ PrefabInstance:
     - target: {fileID: 7414060336482474509, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: health.uiBar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 701971757}
     - target: {fileID: 7414060336482474509, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: health.counter
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1653723690}
     - target: {fileID: 7414060336482474509, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: health.maxValue
-      value: 60
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7414060336482474509, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: healthBarPrefab
@@ -6340,7 +6376,7 @@ PrefabInstance:
       objectReference: {fileID: 1652106454093903718, guid: a1af7150540d3534eb8cc332242d61e4, type: 3}
     - target: {fileID: 7414060336482474509, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: health.startValue
-      value: 60
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7414060336482474509, guid: 55298cee8ab23084287ef8bc2444939a, type: 3}
       propertyPath: maxWanderDistance
@@ -7730,6 +7766,28 @@ Transform:
   - {fileID: 855658610}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1634860042 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4396964093848619044, guid: a1af7150540d3534eb8cc332242d61e4, type: 3}
+  m_PrefabInstance: {fileID: 1078277878}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1653723690 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4396964093848619044, guid: a1af7150540d3534eb8cc332242d61e4, type: 3}
+  m_PrefabInstance: {fileID: 1403531057}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1674214977
 GameObject:
   m_ObjectHideFlags: 0
@@ -8149,11 +8207,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentAfterDrag: {fileID: 0}
   equippedSlot: {fileID: 0}
-  attackRate: 1
+  attackRate: 2
   attackRange: 1
-  damage: 12
+  damage: 15
   anim: {fileID: 1760063602}
-  cam: {fileID: 780291410}
+  cam: {fileID: 2075409400}
 --- !u!95 &1760063602 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 191590248, guid: 36c0e1c7554b94749a21489f6642c63b, type: 3}
@@ -8846,7 +8904,7 @@ PrefabInstance:
       objectReference: {fileID: 2075409400}
     - target: {fileID: -6800696281774539542, guid: 9d962ea15277c7c4795c4151c7a5f9e0, type: 3}
       propertyPath: damage
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -6800696281774539542, guid: 9d962ea15277c7c4795c4151c7a5f9e0, type: 3}
       propertyPath: attackRange
@@ -9168,6 +9226,7 @@ MonoBehaviour:
   spawnRadius: 20
   minDistanceFromPlayer: 10
   yOffset: 2
+  spawnKey: 78
 --- !u!4 &2075570864
 Transform:
   m_ObjectHideFlags: 0

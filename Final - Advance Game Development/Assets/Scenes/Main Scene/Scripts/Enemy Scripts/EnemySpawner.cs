@@ -11,14 +11,21 @@ public class EnemySpawner : MonoBehaviour
     public float spawnRadius = 10f;
     public float minDistanceFromPlayer = 5f;
     public float yOffset = 1f;
+    public char spawnKey = 'Y';
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(GetKeyCodeFromChar(spawnKey)))
         {
             SpawnEnemy();
         }
+    }
+
+    // Function to convert char to KeyCode
+    KeyCode GetKeyCodeFromChar(char character)
+    {
+        return (KeyCode)System.Enum.Parse(typeof(KeyCode), character.ToString());
     }
 
     void SpawnEnemy()
