@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("SampleScene"); //Change "SampleScence" to the game scence
+        SceneManager.LoadScene("MainScene"); 
     }
 
     public void InstructionsLoad()

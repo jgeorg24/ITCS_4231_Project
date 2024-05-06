@@ -26,7 +26,7 @@ public class MainMenuController : MonoBehaviour
     public void InstructionsLoad()
     {
         // Changing the scene to the instructions
-        SceneManager.LoadScene("InstructionScene");
+        SceneManager.LoadScene("Instructions");
     }
 
     public void MainMenuLoad()
