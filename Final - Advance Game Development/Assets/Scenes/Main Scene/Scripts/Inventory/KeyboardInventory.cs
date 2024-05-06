@@ -9,8 +9,9 @@ public class InventoryController : MonoBehaviour
         // Check if "i" key is pressed
         if (Input.GetKeyDown(KeyCode.I))
         {
-            // if inventory panel is active then close it
+            // Toggle the inventory panel
             bool isInventoryOpen = !inventoryPanel.activeSelf;
+            // If inventory panel is active, then close it; otherwise, open it
             inventoryPanel.SetActive(isInventoryOpen);
 
             // Show/hide cursor and lock it for inventory
