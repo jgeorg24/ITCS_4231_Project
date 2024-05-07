@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public bool isGrounded;
+    private bool isJumping = false;
 
     [Header("Player View")] 
     public Transform cameraContainer;
@@ -114,14 +115,11 @@ public class PlayerController : MonoBehaviour
 
     public void JumpInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed && isGrounded && !isJumping) // Check if not already jumping
         {
-
-            if (isGrounded == true)
-            {
-                rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            }
-
+            rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
+            isJumping = true; // Set jumping flag to true
         }
     }
 
@@ -136,6 +134,8 @@ public class PlayerController : MonoBehaviour
             {
                 ApplyFallDamage(calculatedDamage);
             }
+
+            isJumping = false; // Reset jumping flag when the player touches the ground
         }
     }
 
